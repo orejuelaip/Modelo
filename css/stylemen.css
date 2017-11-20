@@ -12,6 +12,12 @@ body {
 	line-height: 18px;
 }
 
+section{
+	width: 100%;
+	margin: auto;
+	position: relative;
+}
+
 a {
 	text-decoration: none;
 	color: #fff;
@@ -29,8 +35,7 @@ a {
 .contenedor-menu-nosotros {
 	width: 20%;
 	min-width: 180px;
-	margin: 50px;
-	display: inline-block;
+	margin: 20px;
 	line-height: 18px;
 }
 
@@ -89,4 +94,15 @@ a {
 .s4  {
 	color: #009AB1;
 	font-size: 12px;
+}
+
+section .container{
+float: left;
+}
+
+section  #contenedorPaginas{
+	background: #f1f1f1;
+	width: 70%;
+	height: 40%;
+	margin: 20px;
 }
