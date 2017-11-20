@@ -1,0 +1,92 @@
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	background: #0b2027;
+	font-family: 'Open Sans';
+	line-height: 18px;
+}
+
+a {
+	text-decoration: none;
+	color: #fff;
+	font-size: 12px;
+}
+
+.btn-menu {
+	display: block;
+	padding: 10px;
+	background: #007D93;
+	color: #FFF;
+	font-size: 12px;
+}
+
+.contenedor-menu-nosotros {
+	width: 20%;
+	min-width: 180px;
+	margin: 50px;
+	display: inline-block;
+	line-height: 18px;
+}
+
+.contenedor-menu-nosotros .menu {
+	width: 100%;
+}
+
+.contenedor-menu-nosotros ul {
+	list-style: none;
+}
+
+.contenedor-menu-nosotros .menu li a {
+	color: #A0A0A0;
+	display: block;
+	padding: 5px 10px;
+	background: #EAEAEB;
+
+}
+
+.contenedor-menu-nosotros .menu li a:hover {
+	background: #1a95d5;
+	color: #fff;
+}
+
+.contenedor-menu-nosotros .menu ul {
+	display: none; 
+}
+
+
+.contenedor-menu-nosotros .menu ul li a {
+	background: #424242;
+	color: #e9e9e9;
+}
+
+
+.contenedor-menu-nosotros .menu .activado > a {
+	background: #1a95d5;
+	color: #fff;
+}
+
+.s1  {
+	color: #003563;
+}
+
+.s2  {
+	color: #00004C;
+	font-size: 14px;
+}
+
+.s3  {
+	color: #00004C;
+	font-size: 10px;
+}
+
+
+.s4  {
+	color: #009AB1;
+	font-size: 12px;
+}
