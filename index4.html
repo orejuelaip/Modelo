@@ -1,38 +1,59 @@
-<h1>Pagina 5</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
+ USE [Multiservicios]
+GO
+/****** Object:  StoredProcedure [dbo].[pa_man_pa_man_TableroDesempenioChart_MostrarDetalle]    Script Date: 29/01/2020 18:14:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
+ALTER PROCEDURE [dbo].[pa_man_pa_man_TableroDesempenioChart_MostrarDetalle]
+(
+	 @Fecha VARCHAR(10)='2020-01-22'
+)
+AS
+BEGIN
 
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
+	SELECT * 
+	FROM (--SET LANGUAGE SPANISH
+		SELECT P.ID					[Id],
+		   P.Código				[Codigo],
+		   P.Evaluación			[Evalaucion],
+		   P.[Responsable(s)]   [Auditores], 
+		   P.FechaInicioPlan	[FechaInicioPlan],
+		   P.FechaFinPlan		[FechaFinPlan],
+		   P.FechaEmisión		[FechaEmision],
+		 (CASE 
+	 WHEN P.FechaBloqueo IS NOT NULL AND P.Observaciones LIKE '%Motivo: Fusión%' THEN 'Proyecto Bloqueado - Fusión'
+	 WHEN P.FechaBloqueo IS NOT NULL then 'Proyecto Bloqueado'
 
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 5</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
+	 WHEN (SELECT COUNT(ID) valor FROM TD_Proyecto_Actividad_Informe 
+	 WHERE IDActividad = 15 AND IDProy = P.ID and EjecuciónReal IS NOT NULL AND EjecuciónReal <= CONVERT(DATE,  '2020-01-22')) >= 1
+	 THEN 'Proyecto Cerrado'
 
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
+	 WHEN (SELECT COUNT(ID) valor FROM TD_Proyecto_Actividad_Informe 
+	 WHERE IDActividad = (SELECT A.ID FROM TD_Actividad A WHERE A.Nombre LIKE 'Emisión de  Informe' AND A.IDPlan = P.IDPlan) AND IDProy = P.ID AND EjecuciónReal IS NOT NULL AND EjecuciónReal <= CONVERT(DATE,  '2020-01-22')) >= 1
+	 THEN 'Informe Emitido'
 
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
+	 When (select count(id) valor from TD_Proyecto_Actividad_Informe 
+	 WHERE IDActividad = (SELECT A.ID FROM TD_Actividad A WHERE A.Nombre LIKE 'Emisión de Borrador de Informe' AND A.IDPlan = P.IDPlan) AND IDProy = P.ID AND EjecuciónReal IS NOT NULL AND EjecuciónReal <= CONVERT(DATE, '2020-01-22') ) >= 1
+	 THEN 'Informe Borrador' 
 
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
-<h1>Pagina 3</h1>
+	 When (select count(id) valor from TD_Proyecto_Actividad_Informe 
+	 where IDActividad = 5 AND IDProy = P.ID AND EjecuciónReal IS NOT NULL  AND EjecuciónReal <= CONVERT(DATE,  '2020-01-22')) >= 1
+	 then 'Proyecto Terminado'
+
+	 WHEN CONVERT(DATE, '22/01/2020') >= P.FechaInicioEjecución then 'Trabajo de Campo'
+	 else 'No Iniciado'
+	 end) Estado,
+	U.Equipo [GerenciaAdjunta]
+	FROM TD_Proyectos P
+		LEFT JOIN view_Usuario U
+	ON U.Nombre_Ape = P.[Subgerente(s)]
+		LEFT JOIN TD_PlanAnual PA
+	ON PA.ID = P.IDPlan
+	WHERE PA.Nombre = '2015' AND P.[Plan] = 1 AND 
+		( (YEAR(P.FechaEmisión) = YEAR(CONVERT(DATE,  '2020-01-22')) AND MONTH(P.FechaEmisión) <= MONTH(CONVERT(DATE, '2020-01-22'))) OR YEAR(P.FechaEmisión) < YEAR(CONVERT(DATE, '2020-01-22')) )
+	) AS A 
+	WHERE A.[GerenciaAdjunta] LIKE '%%'
+
+END
